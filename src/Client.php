@@ -1,6 +1,6 @@
 <?php
 
-namespace SureYee\LaravelIfcert;
+namespace Sureyee\LaravelIfcert;
 
 
 class Client
@@ -17,7 +17,7 @@ class Client
     }
 
 
-    public function getVersion()
+    public static function version()
     {
         return self::$version;
     }

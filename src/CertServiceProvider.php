@@ -1,7 +1,6 @@
 <?php
 
-namespace SureYee\LaravelIfcert;
-
+namespace Sureyee\LaravelIfcert;
 
 use Illuminate\Support\ServiceProvider;
 

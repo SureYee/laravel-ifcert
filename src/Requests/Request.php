@@ -1,6 +1,6 @@
 <?php
 
-namespace SureYee\LaravelIfcert\Requests;
+namespace Sureyee\LaravelIfcert\Requests;
 
 
 class Request

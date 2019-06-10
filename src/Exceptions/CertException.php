@@ -1,5 +1,5 @@
 <?php
-namespace SureYee\LaravelIfcert\Exceptions;
+namespace Sureyee\LaravelIfcert\Exceptions;
 
 class CertException extends \Exception
 {

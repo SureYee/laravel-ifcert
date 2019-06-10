@@ -1,5 +1,5 @@
 <?php
-namespace SureYee\LaravelIfcert\Libs;
+namespace Sureyee\LaravelIfcert\Libs;
 
 class AESHigher{
 

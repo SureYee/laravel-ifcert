@@ -1,9 +1,9 @@
 <?php
-namespace SureYee\LaravelIfcert;
+namespace Sureyee\LaravelIfcert;
 
-use SureYee\LaravelIfcert\Libs\AESHigher;
-use SureYee\LaravelIfcert\Exceptions\CertException;
-use SureYee\LaravelIfcert\Libs\PreBcrypt;
+use Sureyee\LaravelIfcert\Libs\AESHigher;
+use Sureyee\LaravelIfcert\Exceptions\CertException;
+use Sureyee\LaravelIfcert\Libs\PreBcrypt;
 
 class Tools
 {
@@ -36,30 +36,34 @@ class Tools
 
     /**
      * @param $phone
-     * @return array
+     * @param $salt
+     * @return string
      * @throws CertException
      */
-    public static function phoneHash($phone)
+    public static function phoneHash($phone, $uuid)
     {
         // 检查 phone 是否为空
-        if (!isset($phone) || empty($phone))
+        if (empty($phone) || empty($uuid))
         {
-            throw new CertException('phone is empty', 1001);
+            throw new CertException('phone or uuid is empty', 1001);
         }
 
-        $bcry = new PreBcrypt();
-        $salt = $bcry->getSalt();
 
-        $hashstr = hash("sha256", $phone .''. $salt);
+
+        $hashstr = hash("sha256", $phone . $uuid);
 
         $phoneBase64 = base64_encode($hashstr);
 
-        $hash = $bcry->hash($phoneBase64);
+        return (new PreBcrypt())->hash($phoneBase64);
+    }
 
-        return [
-            'phone' => $hash,
-            'salt' => $salt
-        ];
+    /**
+     * 获取uuid
+     * @return string
+     */
+    public static function userUuid()
+    {
+        return (new PreBcrypt())->getSalt();
     }
 
     /**
@@ -114,8 +118,46 @@ class Tools
         ];
     }
 
-    public static function checkCode($msgs)
+    /**
+     * @param $timestamp
+     * @return string
+     */
+    public static function checkCode($timestamp)
     {
-        return md5($msgs);
+        return md5($timestamp);
+    }
+
+    /**
+     * 获取脱敏姓名
+     * @param $name
+     * @return string
+     */
+    public static function hiddenName($name)
+    {
+        $length = mb_strlen($name);
+        if ($name > 3) {
+            return mb_substr($name, 0, 2) . str_pad('', $length-2, '*');
+        }
+        return mb_substr($name, 0,1) . str_pad('', $length-1, '*');
+    }
+
+    /**
+     * 脱敏证件号
+     * @param $idCard
+     * @return string
+     */
+    public static function hiddenIdCard($idCard)
+    {
+        return substr_replace($idCard, '****', -4);
+    }
+
+    /**
+     * 脱敏手机号
+     * @param $mobile
+     * @return string
+     */
+    public static function hiddenPhone($mobile)
+    {
+        return substr_replace($mobile, '****', -4);
     }
 }

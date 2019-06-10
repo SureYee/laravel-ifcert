@@ -1,5 +1,5 @@
 <?php
-namespace SureYee\LaravelIfcert\Libs;
+namespace Sureyee\LaravelIfcert\Libs;
 
     /**根据身份证算出地址****/
 class IdcardLocation{

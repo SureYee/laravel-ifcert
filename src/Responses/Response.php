@@ -1,6 +1,6 @@
 <?php
 
-namespace SureYee\LaravelIfcert\Responses;
+namespace Sureyee\LaravelIfcert\Responses;
 
 
 class Response

@@ -5,6 +5,7 @@ namespace Sureyee\LaravelIfcert;
 
 use Carbon\Carbon;
 use Sureyee\LaravelIfcert\Requests\Request;
+use Sureyee\LaravelIfcert\Responses\Response;
 
 class Client
 {
@@ -63,13 +64,15 @@ class Client
             ->setSendTime(Carbon::now())
             ->setDataType($this->getDataType())
             ->toJson();
-        dd($json);
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $this->getUri(), $headers, $this->encodeData([
-            'apiKey' => $apiKey,
+
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $this->getUri($request), $headers, $this->encodeData([
+            'apiKey' => $apiKey['apiKey'],
             'msg' => $json
         ]));
 
-        $this->http->send($httpRequest);
+        $response = $this->http->send($httpRequest);
+
+        return new Response($response);
 
     }
 
@@ -91,8 +94,14 @@ class Client
         return  $this->isProduction() ? 1 : 0;
     }
 
-    protected function getUri()
+    /**
+     * @param Request $request
+     * @return string
+     * @throws Exceptions\CertException
+     */
+    protected function getUri(Request $request)
     {
-        return $this->isProduction() ? self::$url : '';
+        $url = self::$url . '/' . $request->getUri();
+        return $this->isProduction() ? $url : $url . '/test';
     }
 }

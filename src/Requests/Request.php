@@ -189,8 +189,39 @@ class Request
         return $this;
     }
 
+    /**
+     * @return string
+     * @throws CertException
+     */
     public function getUri()
     {
-
+        switch ($this->infType) {
+            case self::INF_TYPE_USER_INFO:
+                return 'userInfo';
+            case self::INF_TYPE_SCATTER_INVEST:
+                return 'scatterInvest';
+            case self::INF_TYPE_STATUS:
+                return 'status';
+            case self::INF_TYPE_REPAY_PLAN:
+                return 'repayPlan';
+            case self::INF_TYPE_CREDITOR:
+                return 'creditor';
+            case self::INF_TYPE_TRANSFER_PROJECT:
+                return 'transferProject';
+            case self::INF_TYPE_TRANSFER_STATUS:
+                return 'transStatus';
+            case self::INF_TYPE_UNDER_TAKE:
+                return 'underTable';
+            case self::INF_TYPE_TRANSACT:
+                return 'transact';
+            case self::INF_TYPE_LEND_PRODUCT:
+                return 'lendProduct';
+            case self::INF_TYPE_LEND_PRODUCT_CONFIG:
+                return 'lendProductConfig';
+            case self::INF_TYPE_LEND_PARTICULARS:
+                return 'lendParticulars';
+            default:
+                throw new CertException('undefined inftype');
+        }
     }
 }

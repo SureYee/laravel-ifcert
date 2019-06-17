@@ -1,6 +1,8 @@
 <?php
 namespace Sureyee\LaravelIfcert;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Sureyee\LaravelIfcert\Libs\AESHigher;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
 use Sureyee\LaravelIfcert\Libs\PreBcrypt;
@@ -48,8 +50,6 @@ class Tools
             throw new CertException('phone or uuid is empty', 1001);
         }
 
-
-
         $hashstr = hash("sha256", $phone . $uuid);
 
         $phoneBase64 = base64_encode($hashstr);
@@ -67,21 +67,20 @@ class Tools
     }
 
     /**
-     * 批次生成工具
-     * sourceCode 平台编号
-     * tradeDate交易时间
-     * seqNum序列号
+     * @param $sourceCode
+     * @param $tradeDate
+     * @param $seqNum
+     * @return string
+     * @throws CertException
      */
-    public static function batchNumber($sourceCode,$tradeDate,$seqNum,$seqId)
+    public static function batchNumber($sourceCode, $tradeDate = null, $seqNum = null)
     {
+        $seqId = self::getSeqId();
+        $tradeDate = $tradeDate ?? date('Ymd');
+        $seqNum = $seqNum ?? 1;
         // 检查 sourceCode 是否为空
-        if (!isset($sourceCode) || empty($sourceCode) || !isset($tradeDate) || empty($tradeDate) || !isset($seqNum) || empty($seqNum)
-            ||!isset($seqId)||empty($seqId))
-        {
-            return array(
-                'ret' => OPENAPI_ERROR_REQUIRED_PARAMETER_EMPTY,
-                'msg' => 'sourceCode or tradeDate or seqNum is empty');
-        }
+        if (empty($sourceCode) || empty($tradeDate) || empty($seqNum) || empty($seqId))
+            throw new CertException('sourceCode or tradeDate or seqNum is empty', 1001);
 
         $batch_num = $sourceCode .'_'. $tradeDate .$seqNum .'_'. $seqId ;
 
@@ -159,5 +158,17 @@ class Tools
     public static function hiddenPhone($mobile)
     {
         return substr_replace($mobile, '****', -4);
+    }
+
+    protected static function getSeqId()
+    {
+        if (Cache::has('cert_seq_id'))
+            Cache::put('cert_seq_id', 1, Carbon::tomorrow());
+
+        $seqId = Cache::get('cert_seq_id');
+
+        Cache::increment('cert_seq_id');
+
+        return str_pad($seqId, 5, STR_PAD_LEFT);
     }
 }

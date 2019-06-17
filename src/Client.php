@@ -27,6 +27,7 @@ class Client
     {
         $this->http = new \GuzzleHttp\Client();
         $this->apiKey = config('ifcert.api_key');
+        $this->platformCode = config('ifcert.platform_code');
     }
 
     /**
@@ -62,7 +63,7 @@ class Client
             ->setSendTime(Carbon::now())
             ->setDataType($this->getDataType())
             ->toJson();
-
+        dd($json);
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $this->getUri(), $headers, $this->encodeData([
             'apiKey' => $apiKey,
             'msg' => $json

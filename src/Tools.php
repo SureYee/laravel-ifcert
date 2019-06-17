@@ -162,13 +162,13 @@ class Tools
 
     protected static function getSeqId()
     {
-        if (Cache::has('cert_seq_id'))
+        if (!Cache::has('cert_seq_id'))
             Cache::put('cert_seq_id', 1, Carbon::tomorrow());
 
         $seqId = Cache::get('cert_seq_id');
 
         Cache::increment('cert_seq_id');
 
-        return str_pad($seqId, 5, STR_PAD_LEFT);
+        return str_pad($seqId, 5, 0, STR_PAD_LEFT);
     }
 }

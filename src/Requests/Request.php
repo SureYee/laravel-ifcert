@@ -146,7 +146,7 @@ class Request
             'batchNum' => $this->batchNumber ?? Tools::batchNumber($this->sourceCode),
             'checkCode' => Tools::checkCode($this->timestamp),
             'totalNum' => count($this->batchData),
-            'sentTime' => $this->sendTime,
+            'sentTime' => $this->sendTime->format('Y-m-d H:i:s'),
             'sourceCode' => $this->sourceCode,
             'infType' => $this->infType,
             'dataType' => $this->dataType,

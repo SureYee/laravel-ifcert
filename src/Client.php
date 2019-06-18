@@ -59,9 +59,7 @@ class Client
           'content-type' => 'application/x-www-form-urlencoded;charset=UTF-8'
         ];
 
-        $json = $request->setVersion(self::$version)
-            ->setApiKey($apiKey)
-            ->setSendTime(Carbon::now())
+        $json = $request->setApiKey($apiKey)
             ->setDataType($this->getDataType())
             ->toJson();
 

@@ -5,6 +5,7 @@ namespace Sureyee\LaravelIfcert\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\TransformerInterface;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
 use Sureyee\LaravelIfcert\Tools;
@@ -39,12 +40,6 @@ class Request
      * @var \Closure|TransformerInterface|null
      */
     protected $transformer;
-
-    /**
-     * 版本号
-     * @var string
-     */
-    protected $version;
 
     /**
      * 生成好的apikey
@@ -142,11 +137,11 @@ class Request
 
     public function getData() {
         return [
-            "version" => $this->version,
+            "version" => Client::version(),
             'batchNum' => $this->batchNumber ?? Tools::batchNumber($this->sourceCode),
             'checkCode' => Tools::checkCode($this->timestamp),
             'totalNum' => count($this->batchData),
-            'sentTime' => $this->sendTime ? $this->sendTime->format('Y-m-d H:i:s') : null,
+            'sentTime' => $this->sendTime ? $this->sendTime->format('Y-m-d H:i:s') : date('Y-m-d H:i:s'),
             'sourceCode' => $this->sourceCode,
             'infType' => $this->infType,
             'dataType' => $this->dataType,
@@ -156,12 +151,6 @@ class Request
         ];
     }
 
-
-    public function setVersion($version)
-    {
-        $this->version = $version;
-        return $this;
-    }
 
     public function setApiKey(array $apiKey)
     {

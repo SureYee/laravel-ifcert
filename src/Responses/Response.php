@@ -12,7 +12,7 @@ class Response
 
     public function __construct($response)
     {
-        $json = json_decode((string) $response);
+        $json = json_decode((string) $response->getBody());
 
         $this->code = $json->code;
         $this->message = $json->message;

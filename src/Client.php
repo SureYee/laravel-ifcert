@@ -9,7 +9,6 @@ use Sureyee\LaravelIfcert\Responses\Response;
 
 class Client
 {
-    protected static $url = 'https://api.ifcert.org.cn/p2p';
 
     private static $version = '1.5';
 
@@ -53,25 +52,20 @@ class Client
      */
     public function send(Request $request)
     {
-        $apiKey = Tools::getApiKey($this->apiKey, $this->platformCode, self::$version);
-
         $headers = [
           'content-type' => 'application/x-www-form-urlencoded;charset=UTF-8'
         ];
 
-        $json = $request->setApiKey($apiKey)
-            ->setDataType($this->getDataType())
-            ->toJson();
+        $json = $request->toJson();
 
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $this->getUri($request), $headers, $this->encodeData([
-            'apiKey' => $apiKey['apiKey'],
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $request->getUrl(), $headers, $this->encodeData([
+            'apiKey' => $request->getApiKey(),
             'msg' => $json
         ]));
 
         $response = $this->http->send($httpRequest);
 
         return new Response($response);
-
     }
 
     protected function encodeData(array $data) {
@@ -82,24 +76,9 @@ class Client
         return rtrim($o, '&');
     }
 
-    protected function isProduction()
+    public static function env()
     {
-        return (self::$env === 'production' || self::$env === 'prod');
+        return self::$env;
     }
 
-    protected function getDataType()
-    {
-        return  $this->isProduction() ? 1 : 0;
-    }
-
-    /**
-     * @param Request $request
-     * @return string
-     * @throws Exceptions\CertException
-     */
-    protected function getUri(Request $request)
-    {
-        $url = self::$url . '/' . $request->getUri();
-        return $this->isProduction() ? $url : $url . '/test';
-    }
 }

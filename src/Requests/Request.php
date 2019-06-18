@@ -26,8 +26,21 @@ class Request
     const INF_TYPE_LEND_PARTICULARS = 85;
 
     protected static $infTypes = [
-        self::INF_TYPE_USER_INFO => 'userinfo'
+        self::INF_TYPE_USER_INFO => 'userinfo',
+        self::INF_TYPE_SCATTER_INVEST => 'scatterInvest',
+        self::INF_TYPE_STATUS => 'status',
+        self::INF_TYPE_REPAY_PLAN => 'repayPlan',
+        self::INF_TYPE_CREDITOR => 'creditor',
+        self::INF_TYPE_TRANSFER_PROJECT => 'transferProject',
+        self::INF_TYPE_TRANSFER_STATUS => 'transferStatus',
+        self::INF_TYPE_UNDER_TAKE => 'underTake',
+        self::INF_TYPE_TRANSACT => 'transact',
+        self::INF_TYPE_LEND_PRODUCT => 'lendProduct',
+        self::INF_TYPE_LEND_PRODUCT_CONFIG => 'lendProductConfig',
+        self::INF_TYPE_LEND_PARTICULARS => 'lendParticulars',
     ];
+
+    protected static $url = 'https://api.ifcert.org.cn/p2p';
 
     /**
      * 批次数据
@@ -93,6 +106,7 @@ class Request
     /**
      * Request constructor.
      * @param array|Collection $batchData
+     * @param integer $infType
      * @param \Closure|TransformerInterface $transformer
      */
     public function __construct($batchData, $infType, $transformer = null)
@@ -104,6 +118,10 @@ class Request
         $this->infType = $infType;
 
         $this->sourceCode = config('ifcert.platform_code');
+
+        $this->setApiKey(Tools::getApiKey(config('ifcert.api_key'), $this->sourceCode, Client::version()));
+
+        $this->setDataType();
     }
 
     /**
@@ -166,9 +184,9 @@ class Request
         return $this;
     }
 
-    public function setDataType($dataType)
+    public function setDataType()
     {
-        $this->dataType = $dataType;
+        $this->dataType = $this->isProduction() ? 1 : 0;
         return $this;
     }
 
@@ -182,7 +200,7 @@ class Request
      * @return string
      * @throws CertException
      */
-    public function getUri()
+    protected function getUri()
     {
         switch ($this->infType) {
             case self::INF_TYPE_USER_INFO:
@@ -212,5 +230,26 @@ class Request
             default:
                 throw new CertException('undefined inftype');
         }
+    }
+
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+
+    protected function isProduction()
+    {
+        return (Client::env() === 'production' || Client::env() === 'prod');
+    }
+
+    /**
+     * @return string
+     * @throws Exceptions\CertException
+     */
+    public function getUrl()
+    {
+        $url = self::$url . '/' . $this->getUri();
+        return $this->isProduction() ? $url : $url . '/test';
     }
 }

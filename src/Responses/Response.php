@@ -5,10 +5,26 @@ namespace Sureyee\LaravelIfcert\Responses;
 
 class Response
 {
-    private $response;
+    private $code;
+
+    private $message;
+
 
     public function __construct($response)
     {
-        $this->response = $response;
+        $json = json_decode((string) $response);
+
+        $this->code = $json->code;
+        $this->message = $json->message;
+    }
+
+    public function isSuccess()
+    {
+
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

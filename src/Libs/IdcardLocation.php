@@ -851,7 +851,7 @@ class IdcardLocation{
         $arrLocation['654300']='654300';$arrLocation['654301']='654301';$arrLocation['654321']='654321';$arrLocation['654322']='654322';$arrLocation['654323']='654323';
         $arrLocation['654324']='654324';$arrLocation['654325']='654325';$arrLocation['654326']='654326';$arrLocation['659000']='659000';$arrLocation['659001']='659001';
         $arrLocation['659002']='659002';$arrLocation['659003']='659003';$arrLocation['659004']='659004';
-        return $arrLocation[$index];
+        return array_key_exists($index, $arrLocation) ? $arrLocation[$index] : null;
     }
 }
 ?>

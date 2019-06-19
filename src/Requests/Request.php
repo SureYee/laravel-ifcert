@@ -121,7 +121,7 @@ class Request
 
         $this->setApiKey(Tools::getApiKey(config('ifcert.api_key'), $this->sourceCode, Client::version()));
 
-        $this->setDataType();
+        $this->dataType = config('ifcert.enter_db', 0);
     }
 
     /**
@@ -181,12 +181,6 @@ class Request
     public function setSendTime($dateTime)
     {
         $this->sendTime = $dateTime;
-        return $this;
-    }
-
-    public function setDataType()
-    {
-        $this->dataType = $this->isProduction() ? 1 : 0;
         return $this;
     }
 

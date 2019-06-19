@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Sureyee\LaravelIfcert\Libs\AESHigher;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
+use Sureyee\LaravelIfcert\Libs\IdcardLocation;
 use Sureyee\LaravelIfcert\Libs\PreBcrypt;
 
 class Tools
@@ -170,5 +171,28 @@ class Tools
         Cache::increment('cert_seq_id');
 
         return str_pad($seqId, 5, 0, STR_PAD_LEFT);
+    }
+
+    public static function getCompanyAscription($registrationNumber)
+    {
+        // 检查 idcard_name 是否为空
+        if (!isset($registrationNumber) || empty($registrationNumber))
+        {
+            throw new CertException('registration number is empty');
+        }
+        $length = strlen($registrationNumber);
+        if($length!=15 && $length!=18){
+            throw  new CertException('registration number is invalid');
+        }
+        $location = new IdcardLocation();
+        if($length==18){
+            $registrationNumber = substr($registrationNumber,2);
+        }
+
+        $addr = $location->get_addr($registrationNumber);
+        if(empty($addr)){
+            $addr = substr($registrationNumber,0,7);
+        }
+        return $addr;
     }
 }

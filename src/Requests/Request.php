@@ -23,22 +23,7 @@ class Request
     const INF_TYPE_TRANSACT = 4;
     const INF_TYPE_LEND_PRODUCT = 86;
     const INF_TYPE_LEND_PRODUCT_CONFIG = 87;
-    const INF_TYPE_LEND_PARTICULARS = 85;
-
-    protected static $infTypes = [
-        self::INF_TYPE_USER_INFO => 'userinfo',
-        self::INF_TYPE_SCATTER_INVEST => 'scatterInvest',
-        self::INF_TYPE_STATUS => 'status',
-        self::INF_TYPE_REPAY_PLAN => 'repayPlan',
-        self::INF_TYPE_CREDITOR => 'creditor',
-        self::INF_TYPE_TRANSFER_PROJECT => 'transferProject',
-        self::INF_TYPE_TRANSFER_STATUS => 'transferStatus',
-        self::INF_TYPE_UNDER_TAKE => 'underTake',
-        self::INF_TYPE_TRANSACT => 'transact',
-        self::INF_TYPE_LEND_PRODUCT => 'lendProduct',
-        self::INF_TYPE_LEND_PRODUCT_CONFIG => 'lendProductConfig',
-        self::INF_TYPE_LEND_PARTICULARS => 'lendParticulars',
-    ];
+    const INF_TYPE_LEND_PARTICULARS = 88;
 
     protected static $url = 'https://api.ifcert.org.cn/p2p';
 
@@ -212,7 +197,7 @@ class Request
             case self::INF_TYPE_TRANSFER_STATUS:
                 return 'transStatus';
             case self::INF_TYPE_UNDER_TAKE:
-                return 'underTable';
+                return 'underTake';
             case self::INF_TYPE_TRANSACT:
                 return 'transact';
             case self::INF_TYPE_LEND_PRODUCT:

@@ -31,7 +31,11 @@ class CheckRequest extends Request
      */
     public function __construct($requestData, $requestType)
     {
+        if (!array_key_exists('infType', $requestData))
+            throw new CertException('infType参数有误');
+
         $this->requestData = $requestData;
+        $this->infType = $requestData['infType'];
 
         if (!in_array($requestType, [self::REQUEST_TYPE_BATCH_LIST, self::REQUEST_TYPE_BATCH_MESSAGE, self::REQUEST_TYPE_BATCH_NUM]))
             throw new CertException('未知的请求类型');

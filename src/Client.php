@@ -5,8 +5,12 @@ namespace Sureyee\LaravelIfcert;
 
 use Carbon\Carbon;
 use Sureyee\LaravelIfcert\Contracts\Request;
+use Sureyee\LaravelIfcert\Events\BeforeRequest;
+use Sureyee\LaravelIfcert\Events\RequestFailed;
+use Sureyee\LaravelIfcert\Events\RequestSuccess;
 use Sureyee\LaravelIfcert\Responses\Response;
 use GuzzleHttp\Psr7\Request as HttpRequest;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Client
 {
@@ -47,19 +51,24 @@ class Client
     }
 
     /**
-     * @param BatchRequest $request
-     * @throws Exceptions\CertException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @param Request $request
+     * @return Response
+     * @throws GuzzleException
      */
     public function send(Request $request)
     {
-
+        event(new BeforeRequest($request));
 
         $httpRequest = $this->buildHttpRequest($request);
 
-        $response = $this->http->send($httpRequest);
+        $response = new Response($this->http->send($httpRequest));
 
-        return new Response($response);
+        if ($response->isSuccess()) {
+            event(new RequestSuccess($request, $response));
+        } else {
+            event(new RequestFailed($request, $response));
+        }
+        return $response;
     }
 
 

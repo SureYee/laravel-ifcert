@@ -13,8 +13,6 @@ use Sureyee\LaravelIfcert\Tools;
 
 class BatchRequest extends Request
 {
-
-
     protected static $url = 'https://api.ifcert.org.cn/p2p';
 
     /**
@@ -39,18 +37,13 @@ class BatchRequest extends Request
      */
     public function __construct($batchData, $infType, $transformer = null)
     {
+        parent::__construct($infType);
 
         $this->batchData = $batchData instanceof Collection ? $batchData : collect($batchData);
 
+        $this->count = count($this->batchData);
+
         $this->transformer = $transformer;
-
-        $this->sourceCode = config('ifcert.platform_code');
-
-        $this->setApiKey(Tools::getApiKey(config('ifcert.api_key'), $this->sourceCode, Client::version()));
-
-        $this->dataType = config('ifcert.enter_db', 0);
-
-        $this->infType = $infType;
 
     }
 
@@ -91,10 +84,10 @@ class BatchRequest extends Request
     public function getData() {
         return [
             "version" => Client::version(),
-            'batchNum' => $this->batchNumber ?? Tools::batchNumber($this->sourceCode),
+            'batchNum' => $this->batchNumber,
             'checkCode' => Tools::checkCode($this->timestamp),
-            'totalNum' => count($this->batchData),
-            'sentTime' => $this->sendTime ? $this->sendTime->format('Y-m-d H:i:s') : date('Y-m-d H:i:s'),
+            'totalNum' => $this->count,
+            'sentTime' => $this->sendTime->format('Y-m-d H:i:s'),
             'sourceCode' => $this->sourceCode,
             'infType' => $this->infType,
             'dataType' => $this->dataType,

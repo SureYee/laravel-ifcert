@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelIfcert\Contracts;
 
 
+use Carbon\Carbon;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Tools;
 
@@ -69,9 +70,31 @@ abstract class Request
      */
     protected $batchNumber;
 
+    /**
+     * 请求数据条数
+     * @var int
+     */
+    protected $count = 0;
 
-    public function setApiKey(array $apiKey)
+    public function __construct($infType)
     {
+        $this->sourceCode = config('ifcert.platform_code');
+
+        $this->setApiKey();
+
+        $this->batchNumber = Tools::batchNumber($this->sourceCode);
+
+        $this->dataType = config('ifcert.enter_db', 0);
+
+        $this->infType = $infType;
+
+        $this->setSendTime(Carbon::now());
+    }
+
+
+    public function setApiKey()
+    {
+        $apiKey = Tools::getApiKey(config('ifcert.api_key'), config('ifcert.platform_code'), Client::version());
         $this->timestamp = $apiKey['timestamp'];
         $this->apiKey = $apiKey['apiKey'];
         $this->nonce = $apiKey['nonce'];
@@ -99,6 +122,11 @@ abstract class Request
         return $this->apiKey;
     }
 
+    public function getSendTime()
+    {
+        return $this->sendTime;
+    }
+
     /**
      * 检测是否是生产环境
      * @return bool
@@ -106,6 +134,21 @@ abstract class Request
     protected function isProduction()
     {
         return (Client::env() === 'production' || Client::env() === 'prod');
+    }
+
+    public function getBatchNumber()
+    {
+        return $this->batchNumber;
+    }
+
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    public function getInfType()
+    {
+        return $this->infType;
     }
 
     abstract public function getUrl();
@@ -117,4 +160,5 @@ abstract class Request
     abstract public function getBody();
 
     abstract public function getHeaders();
+
 }

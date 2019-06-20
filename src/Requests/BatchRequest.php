@@ -6,24 +6,14 @@ namespace Sureyee\LaravelIfcert\Requests;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Sureyee\LaravelIfcert\Client;
+use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Contracts\TransformerInterface;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
 use Sureyee\LaravelIfcert\Tools;
 
-class Request
+class BatchRequest extends Request
 {
-    const INF_TYPE_USER_INFO = 1;
-    const INF_TYPE_SCATTER_INVEST = 2;
-    const INF_TYPE_STATUS = 6;
-    const INF_TYPE_REPAY_PLAN = 81;
-    const INF_TYPE_CREDITOR = 82;
-    const INF_TYPE_TRANSFER_PROJECT = 83;
-    const INF_TYPE_TRANSFER_STATUS = 84;
-    const INF_TYPE_UNDER_TAKE = 85;
-    const INF_TYPE_TRANSACT = 4;
-    const INF_TYPE_LEND_PRODUCT = 86;
-    const INF_TYPE_LEND_PRODUCT_CONFIG = 87;
-    const INF_TYPE_LEND_PARTICULARS = 88;
+
 
     protected static $url = 'https://api.ifcert.org.cn/p2p';
 
@@ -39,74 +29,29 @@ class Request
      */
     protected $transformer;
 
-    /**
-     * 生成好的apikey
-     * @var string
-     */
-    protected $apiKey;
 
     /**
-     * 加密时间戳
-     * @var string
-     */
-    protected $timestamp;
-
-    /**
-     * 加密随机字符串
-     * @var string
-     */
-    protected $nonce;
-
-    /**
-     * 数据类型，调试为0，正式为1
-     * @var
-     */
-    protected $dataType;
-
-    /**
-     * 平台编码
-     * @var \Illuminate\Config\Repository|mixed
-     */
-    protected $sourceCode;
-
-    /**
-     * 发送时间
-     * @var string
-     */
-    protected $sendTime;
-
-    /**
-     * 接口类型
-     * @var int
-     */
-    protected $infType;
-
-    /**
-     * 批次号
-     * @var string
-     */
-    protected $batchNumber;
-
-
-    /**
-     * Request constructor.
-     * @param array|Collection $batchData
-     * @param integer $infType
-     * @param \Closure|TransformerInterface $transformer
+     * BatchRequest constructor.
+     * @param $batchData
+     * @param $infType
+     * @param null $transformer
+     * @throws CertException
      */
     public function __construct($batchData, $infType, $transformer = null)
     {
+
         $this->batchData = $batchData instanceof Collection ? $batchData : collect($batchData);
 
         $this->transformer = $transformer;
-
-        $this->infType = $infType;
 
         $this->sourceCode = config('ifcert.platform_code');
 
         $this->setApiKey(Tools::getApiKey(config('ifcert.api_key'), $this->sourceCode, Client::version()));
 
         $this->dataType = config('ifcert.enter_db', 0);
+
+        $this->infType = $infType;
+
     }
 
     /**
@@ -138,6 +83,11 @@ class Request
         return json_encode($this->getData()) ;
     }
 
+    /**
+     * 获取数据
+     * @return array
+     * @throws CertException
+     */
     public function getData() {
         return [
             "version" => Client::version(),
@@ -154,28 +104,8 @@ class Request
         ];
     }
 
-
-    public function setApiKey(array $apiKey)
-    {
-        $this->timestamp = $apiKey['timestamp'];
-        $this->apiKey = $apiKey['apiKey'];
-        $this->nonce = $apiKey['nonce'];
-        return $this;
-    }
-
-    public function setSendTime($dateTime)
-    {
-        $this->sendTime = $dateTime;
-        return $this;
-    }
-
-    public function setBatchNumber($tradeDate, $tradNum)
-    {
-        $this->batchNumber = Tools::batchNumber($this->sourceCode, $tradeDate, $tradNum);
-        return $this;
-    }
-
     /**
+     * 获取uri
      * @return string
      * @throws CertException
      */
@@ -211,24 +141,44 @@ class Request
         }
     }
 
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-
-    protected function isProduction()
-    {
-        return (Client::env() === 'production' || Client::env() === 'prod');
-    }
-
     /**
+     * 获取接口请求地址
      * @return string
-     * @throws Exceptions\CertException
+     * @throws CertException
      */
     public function getUrl()
     {
         $url = self::$url . '/' . $this->getUri();
         return $this->isProduction() ? $url : $url . '/test';
+    }
+
+    public function getMethod()
+    {
+        return 'POST';
+    }
+
+    /**
+     * @return string
+     * @throws CertException
+     */
+    public function getBody()
+    {
+        return $this->encodeData([
+            'apiKey' => $this->getApiKey(),
+            'msg' => $this->toJson()
+        ]);
+    }
+
+    public function getHeaders()
+    {
+        return ['content-type' => 'application/x-www-form-urlencoded;charset=UTF-8'];
+    }
+
+    protected function encodeData(array $data) {
+        $o = '';
+        foreach ($data as $key => $datum) {
+            $o .= "{$key}=" . urlencode($datum) . "&";
+        }
+        return rtrim($o, '&');
     }
 }

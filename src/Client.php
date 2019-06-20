@@ -4,8 +4,9 @@ namespace Sureyee\LaravelIfcert;
 
 
 use Carbon\Carbon;
-use Sureyee\LaravelIfcert\Requests\Request;
+use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Responses\Response;
+use GuzzleHttp\Psr7\Request as HttpRequest;
 
 class Client
 {
@@ -46,39 +47,31 @@ class Client
     }
 
     /**
-     * @param Request $request
+     * @param BatchRequest $request
      * @throws Exceptions\CertException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function send(Request $request)
     {
-        $headers = [
-          'content-type' => 'application/x-www-form-urlencoded;charset=UTF-8'
-        ];
 
-        $json = $request->toJson();
 
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $request->getUrl(), $headers, $this->encodeData([
-            'apiKey' => $request->getApiKey(),
-            'msg' => $json
-        ]));
+        $httpRequest = $this->buildHttpRequest($request);
 
         $response = $this->http->send($httpRequest);
 
         return new Response($response);
     }
 
-    protected function encodeData(array $data) {
-        $o = '';
-        foreach ($data as $key => $datum) {
-            $o .= "{$key}=" . urlencode($datum) . "&";
-        }
-        return rtrim($o, '&');
-    }
+
 
     public static function env()
     {
         return self::$env;
+    }
+
+    protected function buildHttpRequest(Request $request)
+    {
+        return new HttpRequest($request->getMethod(), $request->getUrl(), $request->getHeaders(), $request->getBody());
     }
 
 }

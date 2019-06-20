@@ -34,19 +34,19 @@ class CheckRequest extends Request
         if (!array_key_exists('infType', $requestData))
             throw new CertException('infType参数有误');
 
-        $this->requestData = $requestData;
-        $this->infType = $requestData['infType'];
-
         if (!in_array($requestType, [self::REQUEST_TYPE_BATCH_LIST, self::REQUEST_TYPE_BATCH_MESSAGE, self::REQUEST_TYPE_BATCH_NUM]))
             throw new CertException('未知的请求类型');
 
+        $this->requestData = $requestData;
         $this->requestType = $requestType;
+
+        parent::__construct($requestData['infType']);
 
     }
 
     public function getUrl()
     {
-        return self::$url . '/' . $this->requestType;
+        return self::$url . '/' . $this->requestType . '?' . http_build_query($this->getData());
     }
 
     public function getData()
@@ -57,7 +57,6 @@ class CheckRequest extends Request
             'timestamp' => $this->timestamp,
             'nonce' => $this->nonce,
             'sourceCode' => $this->sourceCode,
-            'sentDate' => $this->sendTime,
             'version' => Client::version(),
         ];
 

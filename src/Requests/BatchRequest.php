@@ -44,7 +44,6 @@ class BatchRequest extends Request
         $this->count = count($this->batchData);
 
         $this->transformer = $transformer;
-
     }
 
     /**

@@ -71,8 +71,6 @@ class Client
         return $response;
     }
 
-
-
     public static function env()
     {
         return self::$env;

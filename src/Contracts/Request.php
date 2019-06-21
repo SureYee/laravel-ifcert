@@ -107,6 +107,13 @@ abstract class Request
         return $this;
     }
 
+    /**
+     * 手动调用设置batchnumber
+     * @param $tradeDate
+     * @param $tradNum
+     * @return $this
+     * @throws \Sureyee\LaravelIfcert\Exceptions\CertException
+     */
     public function setBatchNumber($tradeDate, $tradNum)
     {
         $this->batchNumber = Tools::batchNumber($this->sourceCode, $tradeDate, $tradNum);
@@ -122,6 +129,10 @@ abstract class Request
         return $this->apiKey;
     }
 
+    /**
+     * 获取发送时间
+     * @return string
+     */
     public function getSendTime()
     {
         return $this->sendTime;

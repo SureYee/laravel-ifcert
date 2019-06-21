@@ -33,6 +33,11 @@ class RequestLog extends Model
         'request_data' => 'array'
     ];
 
+    /**
+     * 记录请求
+     * @param Request $request
+     * @throws \Sureyee\LaravelIfcert\Exceptions\CertException
+     */
     public static function logRequest(Request $request) {
 
         if (!($request instanceof BatchRequest)) return;
@@ -48,18 +53,31 @@ class RequestLog extends Model
         $model->save();
     }
 
+    /**
+     * 设置已经推送
+     * @return $this
+     */
     public function setReported()
     {
         $this->has_reported = 1;
         return $this;
     }
 
+    /**
+     * 设置已经对账
+     * @return $this
+     */
     public function setChecked()
     {
         $this->has_checked = 1;
         return $this;
     }
 
+    /**
+     * 设置错误信息
+     * @param Response $response
+     * @return $this
+     */
     public function setError(Response $response)
     {
         $this->error_code = $response->getCode();

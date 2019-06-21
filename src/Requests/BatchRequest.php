@@ -141,7 +141,7 @@ class BatchRequest extends Request
     public function getUrl()
     {
         $url = self::$url . '/' . $this->getUri();
-        return $this->isProduction() ? $url : $url . '/test';
+        return $this->isProduction() ? $url : ($url . '/test');
     }
 
     public function getMethod()

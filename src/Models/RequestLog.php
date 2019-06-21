@@ -94,4 +94,9 @@ class RequestLog extends Model
     {
         return self::where('batch_num', $batchNum)->first();
     }
+
+    public static function getLastBatchNum()
+    {
+
+    }
 }

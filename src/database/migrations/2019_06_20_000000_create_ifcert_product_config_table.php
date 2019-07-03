@@ -10,7 +10,9 @@ class CreateIfcertProductConfigTable extends Migration
         Schema::create('ifcert_product_config', function (Blueprint $table) {
             $table->increments('id');
             $table->string('config_id');
-            $table->string('');
+            $table->string('fin_claim_id');
+            $table->string('source_financing_code');
+            $table->string('user_idcard_hash');
             $table->timestamps();
         });
     }

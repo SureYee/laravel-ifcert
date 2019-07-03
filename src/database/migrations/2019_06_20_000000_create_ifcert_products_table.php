@@ -3,11 +3,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIfcertProductTable extends Migration
+class CreateIfcertProductsTable extends Migration
 {
     public function up()
     {
-        Schema::create('ifcert_product', function (Blueprint $table) {
+        Schema::create('ifcert_products', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('request_id')->nullable()->comment('请求id');
             $table->string('source_financing_code')->comment('产品信息编号');

@@ -49,7 +49,7 @@ class BatchRequest extends Request
     /**
      * 数据整理
      */
-    public function transform()
+    protected function transform()
     {
         $transformer = $this->transformer;
         return $this->batchData->values()->map(function ($item) use ($transformer) {
@@ -75,12 +75,18 @@ class BatchRequest extends Request
         return json_encode($this->getData()) ;
     }
 
+    public function getDataList()
+    {
+        return $this->transform();
+    }
+
     /**
      * 获取数据
      * @return array
      * @throws CertException
      */
     public function getData() {
+        $this->batchNumber = Tools::batchNumber($this->sourceCode);
         return [
             "version" => Client::version(),
             'batchNum' => $this->batchNumber,

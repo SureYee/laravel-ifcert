@@ -18,6 +18,6 @@ class CreateIfcertProductConfigTable extends Migration
     }
     public function down()
     {
-        Schema::dropIfExists('ifcert_request_logs');
+        Schema::dropIfExists('ifcert_product_config');
     }
 }

@@ -3,27 +3,36 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIfcertRequestLogsTable extends Migration
+class CreateIfcertUserInfoTable extends Migration
 {
     public function up()
     {
-        Schema::create('ifcert_request_logs', function (Blueprint $table) {
+        Schema::create('ifcert_user_info', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('batch_num')->comment('批次号')->unique();
-            $table->dateTime('send_time')->comment('请求时间');
-            $table->integer('inf_type')->comment('接口类型');
-            $table->text('url')->comment('请求接口地址');
-            $table->integer('count')->comment('请求数据条数');
-            $table->mediumText('request_data')->comment('请求数据');
-            $table->boolean('has_reported')->default(0)->comment('是否已经上报');
-            $table->boolean('has_checked')->default(0)->comment('是否已经check');
-            $table->string('error_message')->nullable()->comment('上报失败错误信息');
-            $table->string('error_code')->nullable()->comment('上报失败错误码');
+            $table->unsignedInteger('request_id')->nullable()->comment('请求id');
+            $table->unsignedTinyInteger('user_type');
+            $table->unsignedTinyInteger('user_attr');
+            $table->dateTime('user_create_time');
+            $table->string('username');
+            $table->tinyInteger('countries');
+            $table->unsignedTinyInteger('card_type');
+            $table->string('user_idcard');
+            $table->string('user_idcard_hash');
+            $table->string('user_phone');
+            $table->string('user_phone_hash');
+            $table->string('user_uuid');
+            $table->string('user_lawperson')->default(-1);
+            $table->integer('user_fund')->default(-1);
+            $table->string('user_province')->default(-1);
+            $table->string('user_address')->default(-1);
+            $table->string('register_date')->default(-1);
+            $table->string('user_sex')->default(-1);
+            $table->text('user_bank_account');
             $table->timestamps();
         });
     }
     public function down()
     {
-        Schema::dropIfExists('ifcert_request_logs');
+        Schema::dropIfExists('ifcert_user_info');
     }
 }

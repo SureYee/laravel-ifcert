@@ -117,7 +117,7 @@ class BatchRequest extends Request
             case self::INF_TYPE_TRANSFER_PROJECT:
                 return 'transferProject';
             case self::INF_TYPE_TRANSFER_STATUS:
-                return 'transStatus';
+                return 'transferStatus';
             case self::INF_TYPE_UNDER_TAKE:
                 return 'underTake';
             case self::INF_TYPE_TRANSACT:

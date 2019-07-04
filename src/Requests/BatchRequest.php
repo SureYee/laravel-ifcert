@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelIfcert\Requests;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
@@ -239,7 +240,14 @@ class BatchRequest extends Request
      */
     public function store()
     {
-        return $this->getModel()->insert($this->transform()->toArray());
+        return DB::transaction(function () {
+            $this->transform()->each(function ($data) {
+                $this->getModel()
+                    ->fillable(array_keys($data))
+                    ->fill($data)
+                    ->save();
+            });
+        });
     }
 
 }

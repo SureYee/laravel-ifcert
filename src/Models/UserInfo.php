@@ -36,38 +36,42 @@ class UserInfo extends IfcertModel
 
     public static function getTransformer()
     {
-        return function (UserInfo $model) {
+        return function (UserInfo $info) {
             return [
                 'version' => Client::version(),
                 'sourceCode' => config('ifcert.platform_code'),
-                'userAttr' => $model->user_attr,
-                'userType' => $model->user_type,
-                'userCreateTime' => $model->user_create_time->format('Y-m-d H:i:s'),
-                'userName' => $model->username,
-                'countries' => $model->countries,
-                'cardType' => $model->card_type,
-                'userIdcardHash' => $model->user_idcard_hash,
-                'userIdcard' => $model->user_idcard,
-                'userPhone' => $model->user_phone,
-                'userPhoneHash' => $model->user_phone_hash,
-                'userUuid' => $model->user_uuid,
-                'userLawperson' => $model->user_lawperson,
-                'userFund' => $model->user_fund,
-                'userProvince' => $model->user_province,
-                'userAddress' => $model->user_address,
-                'registerDate' => $model->regitser_date->format('Y-m-d H:i:s'),
-                'userSex' => $model->user_sex,
+                'userAttr' => $info->user_attr,
+                'userType' => $info->user_type,
+                'userCreateTime' => $info->user_create_time->format('Y-m-d H:i:s'),
+                'userName' => $info->username,
+                'countries' => $info->countries,
+                'cardType' => $info->card_type,
+                'userIdcardHash' => $info->user_idcard_hash,
+                'userIdcard' => $info->user_idcard,
+                'userPhone' => $info->user_phone,
+                'userPhoneHash' => $info->user_phone_hash,
+                'userUuid' => $info->user_uuid,
+                'userLawperson' => $info->user_lawperson,
+                'userFund' => $info->user_fund,
+                'userProvince' => $info->user_province,
+                'userAddress' => $info->user_address,
+                'registerDate' => $info->regitser_date->format('Y-m-d H:i:s'),
+                'userSex' => $info->user_sex,
                 'userList' => array_map(function ($account) {
                     return [
                         'userBankAccount' => $account
                     ];
-                }, $model->user_bank_account)
+                }, $info->user_bank_account)
             ];
         };
     }
 
-    public static function needReportData()
+    /**
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
+     */
+    public function storeFromData(array $data, RequestLog $log)
     {
-        return self::unReport()->get();
+        // TODO: Implement storeFromData() method.
     }
 }

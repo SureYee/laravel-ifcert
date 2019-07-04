@@ -16,13 +16,22 @@ class Creditor extends IfcertModel
         return Request::INF_TYPE_CREDITOR;
     }
 
+
+    /**
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
+     */
+    public function storeFromData(array $data, RequestLog $log)
+    {
+
+    }
+
+    /**
+     * 将数据库数据转化为上报数据结构
+     * @return array
+     */
     public static function getTransformer()
     {
         // TODO: Implement getTransformer() method.
-    }
-
-    public static function needReportData()
-    {
-        return self::unReport()->get();
     }
 }

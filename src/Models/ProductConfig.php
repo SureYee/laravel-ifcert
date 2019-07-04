@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelIfcert\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
 
@@ -19,11 +20,30 @@ class ProductConfig extends IfcertModel
 
     public static function getTransformer()
     {
-        // TODO: Implement getTransformer() method.
+        return function (ProductConfig $config) {
+            return [
+                'version' => Client::version(),
+                'sourceCode' => config('ifcert.platform_code'),
+                'configId' => $config->config_id,
+                'finClaimId' => $config->fin_claim_id,
+                'sourceFinancingCode' => $config->source_financing_code,
+                'userIdcardHash' => $config->user_idcard_hash
+            ];
+        };
     }
 
-    public static function needReportData()
+    /**
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
+     */
+    public function storeFromData(array $data, RequestLog $log)
     {
-        return self::unReport()->get();
+        $this->config_id = $data['configId'];
+        $this->request_id = $log->id;
+        $this->fin_claim_id = $data['finClaimId'];
+        $this->source_financing_code = $data['sourceFinancingCode'];
+        $this->user_idcard_hash = $data['userIdcardHash'];
+
+        return $this->save();
     }
 }

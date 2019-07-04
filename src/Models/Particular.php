@@ -18,11 +18,15 @@ class Particular extends IfcertModel
 
     public static function getTransformer()
     {
-        // TODO: Implement getTransformer() method.
+
     }
 
-    public static function needReportData()
+    /**
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
+     */
+    public function storeFromData(array $data, RequestLog $log)
     {
-        return self::unReport()->get();
+        // TODO: Implement storeFromData() method.
     }
 }

@@ -11,9 +11,22 @@ abstract class IfcertModel extends Model
 {
     abstract public static function getInfType();
 
+    /**
+     * 将数据库数据转化为上报数据结构
+     * @return array
+     */
     abstract public static function getTransformer();
 
-    abstract public static function needReportData();
+    /**
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
+     */
+    abstract public function storeFromData(array $data, RequestLog $log);
+
+    public static function needReportData()
+    {
+        return self::unReport()->get();
+    }
 
     public function scopeUnReport($query)
     {
@@ -22,9 +35,13 @@ abstract class IfcertModel extends Model
 
     public function updateReported(BatchRequest $request, RequestLog $log)
     {
-        $request->getDataList()->each(function (IfcertModel $model) use ($log) {
-            $model->request()->associate($log);
-            $model->save();
+        $request->getDataList()->each(function ($data) use ($request, $log) {
+            if ($data instanceof IfcertModel) {
+                $data->request()->associate($log);
+                $data->save();
+            } else {
+                $request->getModel()->storeFromData($data, $log);
+            }
         });
     }
 

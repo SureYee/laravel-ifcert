@@ -23,10 +23,11 @@ class Product extends IfcertModel
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * 将上报的数据转化为数据库数据结构
+     * @return mixed
      */
-    public static function needReportData()
+    public function storeFromData(array $data, RequestLog $log)
     {
-        return self::unReport()->get();
+        // TODO: Implement storeFromData() method.
     }
 }

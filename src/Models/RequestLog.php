@@ -42,6 +42,7 @@ class RequestLog extends Model
     public static function logRequest(Request $request) {
 
         if (!($request instanceof BatchRequest)) return;
+
         DB::transaction(function () use($request) {
             $model = new self();
 
@@ -53,7 +54,7 @@ class RequestLog extends Model
 
             $model->save();
 
-            $request->getModel()->updateReported($request);
+            $request->getModel()->updateReported($request, $model);
 
         });
 

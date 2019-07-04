@@ -55,9 +55,9 @@ class Client
      */
     public function send(Request $request)
     {
-        event(new BeforeRequest($request));
-
         $httpRequest = $this->buildHttpRequest($request);
+
+        event(new BeforeRequest($request));
 
         $response = new Response($this->http->send($httpRequest));
 

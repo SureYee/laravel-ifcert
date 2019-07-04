@@ -9,6 +9,7 @@ class CreateIfcertProductConfigTable extends Migration
     {
         Schema::create('ifcert_product_config', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('request_id')->nullable()->comment('请求id');
             $table->string('config_id');
             $table->string('fin_claim_id');
             $table->string('source_financing_code');

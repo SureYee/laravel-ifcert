@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelIfcert;
 
 use Illuminate\Support\ServiceProvider;
+use Sureyee\LaravelIfcert\Commands\IfcertReport;
 
 class CertServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,10 @@ class CertServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/database/migrations' => database_path('migrations'),
         ], 'ifcert-migrations');
+
+        $this->commands([
+            IfcertReport::class
+        ]);
 
         Client::setEnv(env('APP_ENV'));
     }

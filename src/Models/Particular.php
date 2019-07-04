@@ -30,7 +30,7 @@ class Particular extends IfcertModel
                 'transType' => $particular->trans_type,
                 'transMoney' => $particular->trans_money,
                 'userIdcardHash' => $particular->user_idcard_hash,
-                'trans_time' => $particular->trans_time->format('Y-m-d H:i:s'),
+                'transTime' => $particular->trans_time->format('Y-m-d H:i:s'),
             ];
         };
     }
@@ -49,5 +49,10 @@ class Particular extends IfcertModel
          $this->trans_time = $data['transTime'];
          $this->request_id = $log->id;
          $this->save();
+    }
+
+    public function getTransMoneyAttribute($value)
+    {
+        return sprintf('%01.2f', $value);
     }
 }

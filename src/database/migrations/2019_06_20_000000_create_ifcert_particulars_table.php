@@ -15,7 +15,7 @@ class CreateIfcertParticularsTable extends Migration
             $table->integer('trans_type');
             $table->float('trans_money');
             $table->string('user_idcard_hash');
-            $table->dateTime('transTime');
+            $table->dateTime('trans_time');
             $table->timestamps();
         });
     }

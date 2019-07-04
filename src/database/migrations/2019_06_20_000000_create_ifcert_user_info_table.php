@@ -21,12 +21,12 @@ class CreateIfcertUserInfoTable extends Migration
             $table->string('user_phone');
             $table->string('user_phone_hash');
             $table->string('user_uuid');
-            $table->string('user_lawperson')->default(-1);
-            $table->integer('user_fund')->default(-1);
-            $table->string('user_province')->default(-1);
-            $table->string('user_address')->default(-1);
-            $table->string('register_date')->default(-1);
-            $table->string('user_sex')->default(-1);
+            $table->string('user_lawperson')->nullable();
+            $table->integer('user_fund')->nullable();
+            $table->string('user_province')->nullable();
+            $table->string('user_address')->nullable();
+            $table->date('register_date')->nullable();
+            $table->string('user_sex')->nullable();
             $table->text('user_bank_account');
             $table->timestamps();
         });

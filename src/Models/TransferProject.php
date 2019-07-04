@@ -2,6 +2,7 @@
 
 namespace Sureyee\LaravelIfcert\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
@@ -18,13 +19,15 @@ use Sureyee\LaravelIfcert\Contracts\Request;
  * @property $transfer_amount
  * @property $transfer_interest_rate
  * @property $float_money
- * @property $transfer_date
+ * @property Carbon $transfer_date
  */
 class TransferProject extends IfcertModel
 {
 
 
     protected $table = 'ifcert_transfer_projects';
+
+    protected $dates = ['transfer_date'];
 
     public static function getInfType()
     {
@@ -45,7 +48,7 @@ class TransferProject extends IfcertModel
                 'transferAmount' => $transfer->transfer_amount,
                 'transferInterestRate' => $transfer->transfer_interest_rate,
                 'floatMoney' => $transfer->float_money,
-                'transferDate' => $transfer->transfer_date,
+                'transferDate' => $transfer->transfer_date->format('Y-m-d'),
             ];
         };
     }

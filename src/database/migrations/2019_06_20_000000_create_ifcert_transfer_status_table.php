@@ -13,7 +13,7 @@ class CreateIfcertTransferStatusTable extends Migration
             $table->string('transfer_id');
             $table->unsignedTinyInteger('transfer_status');
             $table->float('amount');
-            $table->float('float_amount');
+            $table->float('float_money');
             $table->dateTime('product_date');
             $table->timestamps();
         });

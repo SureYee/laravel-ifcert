@@ -50,8 +50,6 @@ class BatchRequest extends Request
     {
         parent::__construct($infType);
 
-        if (!is_array(reset($batchData))) $batchData = [$batchData];
-
         $this->batchData = $batchData instanceof Collection ? $batchData : collect($batchData);
 
         $this->count = count($this->batchData);

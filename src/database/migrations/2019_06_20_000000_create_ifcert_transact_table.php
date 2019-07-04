@@ -17,7 +17,7 @@ class CreateIfcertTransactTable extends Migration
             $table->string('transfer_id')->default(-1);
             $table->string('replan_id')->default(-1);
             $table->string('trans_type')->default(-1);
-            $table->string('trans_money')->default(-1);
+            $table->float('trans_money', 9, 2);
             $table->string('user_idcard_hash')->default(-1);
             $table->dateTime('trans_time');
             $table->timestamps();

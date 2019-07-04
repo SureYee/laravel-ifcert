@@ -2,10 +2,9 @@
 
 namespace Sureyee\LaravelIfcert\Requests;
 
-
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Sureyee\LaravelIfcert\Client;
+use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Contracts\TransformerInterface;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
@@ -91,7 +90,7 @@ class BatchRequest extends Request
 
     public function getDataList()
     {
-        return $this->transform();
+        return $this->batchData;
     }
 
     protected function buildBatchNumber()
@@ -160,7 +159,7 @@ class BatchRequest extends Request
 
     /**
      * @param $infType
-     * @return  Model
+     * @return  IfcertModel
      * @throws CertException
      */
     public function getModel()

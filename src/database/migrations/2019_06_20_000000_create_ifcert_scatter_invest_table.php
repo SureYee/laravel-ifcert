@@ -17,8 +17,8 @@ class CreateIfcertScatterInvestTable extends Migration
             $table->unsignedInteger('loan_use');
             $table->text('loan_describe');
             $table->float('loan_rate', 7, 6);
-            $table->float('amount');
-            $table->float('surplus_amount');
+            $table->float('amount', 9, 2);
+            $table->float('surplus_amount', 9, 2);
             $table->unsignedInteger('term');
             $table->unsignedTinyInteger('pay_type');
             $table->float('service_cost');

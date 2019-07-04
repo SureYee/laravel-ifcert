@@ -3,12 +3,24 @@
 namespace Sureyee\LaravelIfcert\Requests;
 
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Contracts\TransformerInterface;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
+use Sureyee\LaravelIfcert\Models\Creditor;
+use Sureyee\LaravelIfcert\Models\Particular;
+use Sureyee\LaravelIfcert\Models\Product;
+use Sureyee\LaravelIfcert\Models\ProductConfig;
+use Sureyee\LaravelIfcert\Models\RepayPlan;
+use Sureyee\LaravelIfcert\Models\ScatterInvest;
+use Sureyee\LaravelIfcert\Models\Status;
+use Sureyee\LaravelIfcert\Models\Transact;
+use Sureyee\LaravelIfcert\Models\TransferProject;
+use Sureyee\LaravelIfcert\Models\TransferStatus;
+use Sureyee\LaravelIfcert\Models\Undertake;
+use Sureyee\LaravelIfcert\Models\UserInfo;
 use Sureyee\LaravelIfcert\Tools;
 
 class BatchRequest extends Request
@@ -38,6 +50,8 @@ class BatchRequest extends Request
     public function __construct($batchData, $infType, $transformer = null)
     {
         parent::__construct($infType);
+
+        if (!is_array(reset($batchData))) $batchData = [$batchData];
 
         $this->batchData = $batchData instanceof Collection ? $batchData : collect($batchData);
 
@@ -80,16 +94,21 @@ class BatchRequest extends Request
         return $this->transform();
     }
 
+    protected function buildBatchNumber()
+    {
+        $this->batchNumber = $this->batchNumber ?? Tools::batchNumber($this->sourceCode);
+        return $this->batchNumber;
+    }
     /**
      * 获取数据
      * @return array
      * @throws CertException
      */
-    public function getData() {
-        $this->batchNumber = Tools::batchNumber($this->sourceCode);
+    public function getData()
+    {
         return [
             "version" => Client::version(),
-            'batchNum' => $this->batchNumber,
+            'batchNum' => $this->buildBatchNumber(),
             'checkCode' => Tools::checkCode($this->timestamp),
             'totalNum' => $this->count,
             'sentTime' => $this->sendTime->format('Y-m-d H:i:s'),
@@ -140,6 +159,43 @@ class BatchRequest extends Request
     }
 
     /**
+     * @param $infType
+     * @return  Model
+     * @throws CertException
+     */
+    public function getModel()
+    {
+        switch ($this->infType) {
+            case Request::INF_TYPE_LEND_PRODUCT_CONFIG:
+                return app(ProductConfig::class);
+            case Request::INF_TYPE_LEND_PRODUCT:
+                return app(Product::class);
+            case Request::INF_TYPE_USER_INFO:
+                return app(UserInfo::class);
+            case Request::INF_TYPE_TRANSACT:
+                return app(Transact::class);
+            case Request::INF_TYPE_TRANSFER_STATUS:
+                return app(TransferStatus::class);
+            case Request::INF_TYPE_REPAY_PLAN:
+                return app(RepayPlan::class);
+            case Request::INF_TYPE_UNDER_TAKE:
+                return app(Undertake::class);
+            case Request::INF_TYPE_TRANSFER_PROJECT:
+                return app(TransferProject::class);
+            case Request::INF_TYPE_CREDITOR:
+                return app(Creditor::class);
+            case  Request::INF_TYPE_SCATTER_INVEST:
+                return app(ScatterInvest::class);
+            case Request::INF_TYPE_LEND_PARTICULARS:
+                return app(Particular::class);
+            case Request::INF_TYPE_STATUS:
+                return app(Status::class);
+            default:
+                throw new CertException('undefind inftype');
+        }
+    }
+
+    /**
      * 获取接口请求地址
      * @return string
      * @throws CertException
@@ -179,4 +235,14 @@ class BatchRequest extends Request
         }
         return rtrim($o, '&');
     }
+
+    /**
+     * @return boolean
+     * @throws CertException
+     */
+    public function store()
+    {
+        return $this->getModel()->insert($this->transform()->toArray());
+    }
+
 }

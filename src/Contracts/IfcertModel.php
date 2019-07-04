@@ -28,6 +28,11 @@ abstract class IfcertModel extends Model
         return self::unReport()->get();
     }
 
+    public function getSourceCode()
+    {
+        return config('ifcert.platform_code');
+    }
+
     public function scopeUnReport($query)
     {
         return $query->whereNull('request_id');

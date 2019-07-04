@@ -12,7 +12,7 @@ class CreateIfcertStatusTable extends Migration
             $table->unsignedInteger('request_id')->nullable()->comment('请求id');
             $table->string('source_product_code');
             $table->unsignedTinyInteger('product_status');
-            $table->dateTime('product_time');
+            $table->dateTime('product_date');
             $table->timestamps();
         });
     }

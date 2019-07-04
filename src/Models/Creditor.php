@@ -16,7 +16,6 @@ class Creditor extends IfcertModel
         return Request::INF_TYPE_CREDITOR;
     }
 
-
     /**
      * 将上报的数据转化为数据库数据结构
      * @return mixed

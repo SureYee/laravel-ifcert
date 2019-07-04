@@ -3,10 +3,22 @@
 namespace Sureyee\LaravelIfcert\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
 
-
+/**
+ * Class Product
+ * @package Sureyee\LaravelIfcert\Models
+ * @property $source_financing_code
+ * @property $financing_start_time
+ * @property $product_name
+ * @property $rate
+ * @property $min_rate
+ * @property $max_rate
+ * @property $term
+ * @property $request_id
+ */
 class Product extends IfcertModel
 {
 
@@ -19,7 +31,19 @@ class Product extends IfcertModel
 
     public static function getTransformer()
     {
-        // TODO: Implement getTransformer() method.
+        return function (Product $product) {
+            return [
+                'version' => Client::version(),
+                'sourceCode' => config('ifcert.platform_code'),
+                'sourceFinancingCode' => $product->source_financing_code,
+                'financingStartTime' => $product->financing_start_time,
+                'productName' => $product->product_name,
+                'rate' => $product->rate,
+                'minRate' => $product->min_rate,
+                'maxRate' => $product->max_rate,
+                'term' => $product->term
+            ];
+        };
     }
 
     /**
@@ -28,6 +52,15 @@ class Product extends IfcertModel
      */
     public function storeFromData(array $data, RequestLog $log)
     {
-        // TODO: Implement storeFromData() method.
+        $this->source_financing_code = $data['sourceFinancingCode'];
+        $this->financing_start_time = $data['financingStartTime'];
+        $this->product_name = $data['productName'];
+        $this->rate = $data['rate'];
+        $this->min_rate = $data['minRate'];
+        $this->max_rate = $data['maxRate'];
+        $this->term = $data['term'];
+        $this->request_id = $log->id;
+
+        $this->save();
     }
 }

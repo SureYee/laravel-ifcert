@@ -12,6 +12,7 @@ class CreateIfcertRepayPlanTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('request_id')->nullable()->comment('请求id');
             $table->string('user_idcard_hash');
+            $table->string('source_product_code');
             $table->integer('total_issue');
             $table->integer('issue');
             $table->string('replan_id');

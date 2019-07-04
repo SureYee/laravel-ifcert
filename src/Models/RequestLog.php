@@ -5,6 +5,7 @@ namespace Sureyee\LaravelIfcert\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Requests\BatchRequest;
 use Sureyee\LaravelIfcert\Responses\Response;
@@ -41,16 +42,21 @@ class RequestLog extends Model
     public static function logRequest(Request $request) {
 
         if (!($request instanceof BatchRequest)) return;
-        $model = new self();
+        DB::transaction(function () use($request) {
+            $model = new self();
 
-        $model->batch_num = $request->getBatchNumber();
-        $model->send_time = $request->getSendTime();
-        $model->inf_type = $request->getInfType();
-        $model->url = $request->getUrl();
-        $model->count = $request->getCount();
-        $model->request_data = $request->getData();
+            $model->batch_num = $request->getBatchNumber();
+            $model->send_time = $request->getSendTime();
+            $model->inf_type = $request->getInfType();
+            $model->url = $request->getUrl();
+            $model->count = $request->getCount();
 
-        $model->save();
+            $model->save();
+
+            $request->getModel()->updateReported($request);
+
+        });
+
     }
 
     /**

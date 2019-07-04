@@ -23,6 +23,6 @@ class CreateIfcertProductsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('ifcert_request_logs');
+        Schema::dropIfExists('ifcert_products');
     }
 }

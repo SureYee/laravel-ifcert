@@ -82,8 +82,6 @@ abstract class Request
 
         $this->setApiKey();
 
-        $this->batchNumber = Tools::batchNumber($this->sourceCode);
-
         $this->dataType = config('ifcert.enter_db', 0);
 
         $this->infType = $infType;

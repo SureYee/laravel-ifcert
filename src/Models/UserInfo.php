@@ -20,4 +20,13 @@ class UserInfo extends Model
     const USER_ATTR_SELF = 4;
     const USER_ATTR_3RD_PART = 5;
     const USER_ATTR_REPAY_AGENT = 6;
+
+    /**
+     * @param $hash
+     * @return self
+     */
+    public static function findByHash($hash)
+    {
+        return self::where('user_idcard_hash', $hash)->latest()->first();
+    }
 }

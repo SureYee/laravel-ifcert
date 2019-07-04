@@ -2,8 +2,6 @@
 
 namespace Sureyee\LaravelIfcert;
 
-
-use Carbon\Carbon;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Events\BeforeRequest;
 use Sureyee\LaravelIfcert\Events\RequestFailed;
@@ -80,5 +78,7 @@ class Client
     {
         return new HttpRequest($request->getMethod(), $request->getUrl(), $request->getHeaders(), $request->getBody());
     }
+
+
 
 }

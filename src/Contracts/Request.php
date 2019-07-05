@@ -82,7 +82,7 @@ abstract class Request
 
         $this->setApiKey();
 
-        $this->dataType = config('ifcert.enter_db', 0);
+        $this->dataType = (int) config('ifcert.enter_db', 0);
 
         $this->infType = $infType;
 

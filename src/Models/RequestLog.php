@@ -5,6 +5,7 @@ namespace Sureyee\LaravelIfcert\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Requests\BatchRequest;
@@ -24,6 +25,7 @@ use Sureyee\LaravelIfcert\Responses\Response;
  * @property boolean error_code
  * @property boolean error_message
  *
+ * @method static Builder unChecked()
  */
 class RequestLog extends Model
 {
@@ -37,11 +39,9 @@ class RequestLog extends Model
     /**
      * 记录请求
      * @param Request $request
-     * @throws \Sureyee\LaravelIfcert\Exceptions\CertException
+     * @return mixed
      */
-    public static function logRequest(Request $request) {
-
-        if (!($request instanceof BatchRequest)) return;
+    public static function logRequest(BatchRequest $request) {
 
         DB::transaction(function () use($request) {
             $model = new self();
@@ -55,9 +55,9 @@ class RequestLog extends Model
             $model->save();
 
             $request->getModel()->updateReported($request, $model);
-
         });
 
+        return true;
     }
 
     /**
@@ -102,8 +102,28 @@ class RequestLog extends Model
         return self::where('batch_num', $batchNum)->first();
     }
 
-    public static function getLastBatchNum()
+    public function scopeUnChecked($query)
     {
+        return $query->where('has_reported', 1)->where('has_checked', 0);
+    }
 
+    public function scopeIsNot($query)
+    {
+        return $query->where('checked_message', 'isNot');
+    }
+
+    public function scopeSuccess($query)
+    {
+        return $query->where('checked_message', 'success');
+    }
+
+    public function scopeHold($query)
+    {
+        return $query->where('checked_message', 'hold');
+    }
+
+    public function scopeFailed($query)
+    {
+        return $query->where('checked_message', 'failed');
     }
 }

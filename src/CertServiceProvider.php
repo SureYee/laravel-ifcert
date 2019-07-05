@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelIfcert;
 
 use Illuminate\Support\ServiceProvider;
+use Sureyee\LaravelIfcert\Commands\IfcertCheck;
 use Sureyee\LaravelIfcert\Commands\IfcertReport;
 
 class CertServiceProvider extends ServiceProvider
@@ -24,7 +25,8 @@ class CertServiceProvider extends ServiceProvider
         ], 'ifcert-migrations');
 
         $this->commands([
-            IfcertReport::class
+            IfcertReport::class,
+            IfcertCheck::class,
         ]);
 
         Client::setEnv(env('APP_ENV'));

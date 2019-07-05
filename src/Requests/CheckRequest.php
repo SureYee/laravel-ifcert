@@ -5,6 +5,7 @@ namespace Sureyee\LaravelIfcert\Requests;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\Request;
 use Sureyee\LaravelIfcert\Exceptions\CertException;
+use Sureyee\LaravelIfcert\Models\RequestLog;
 
 /**
  * 对账接口请求类
@@ -25,12 +26,19 @@ class CheckRequest extends Request
 
     /**
      * CheckRequest constructor.
-     * @param $requestData
-     * @param $requestType
+     * @param array|RequestLog $requestData
+     * @param int $requestType
      * @throws CertException
      */
     public function __construct($requestData, $requestType)
     {
+        if ($requestData instanceof RequestLog) {
+            $requestData = [
+                'batchNum' => $requestData->batch_num,
+                'infType' => $requestData->inf_type
+            ];
+        }
+
         if (!array_key_exists('infType', $requestData))
             throw new CertException('infType参数有误');
 

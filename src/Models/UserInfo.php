@@ -21,10 +21,12 @@ class UserInfo extends IfcertModel
     protected $table = 'ifcert_user_info';
 
     protected $casts = [
-        'user_bank_account' => 'array'
+        'user_bank_account' => 'array',
+        'register_date' => 'datetime:Y-m-d'
     ];
 
-    protected $dates = ['user_create_time', 'register_date'];
+    protected $dates = ['user_create_time'];
+
     /**
      * @param $hash
      * @return self
@@ -91,9 +93,11 @@ class UserInfo extends IfcertModel
         $this->user_lawperson = $data['userLawperson'] != -1 ?: null;
         $this->user_province = $data['userProvince'] != -1 ?: null;
         $this->user_address = $data['userAddress'] != -1 ?: null;
-        $this->reigster_date = $data['registerDate'] != -1 ?: null;
+        $this->register_date = $data['registerDate'] != -1 ?: null;
         $this->user_sex = $data['userSex'] != -1 ?: null;
-        $this->user_bank_account = isset($data['userBankAccount']) ? $data['userBankAccount'] :array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
+        $this->user_bank_account = isset($data['userBankAccount']) ? [$data['userBankAccount']] :array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
+
+        $this->save();
     }
 
     public function setUserBankAccountAttribute($value)

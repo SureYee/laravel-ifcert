@@ -39,8 +39,8 @@ class Product extends IfcertModel
                 'financingStartTime' => $product->financing_start_time,
                 'productName' => $product->product_name,
                 'rate' => $product->rate,
-                'minRate' => $product->min_rate,
-                'maxRate' => $product->max_rate,
+                'minRate' => is_null($product->min_rate) ? -1 : $product->min_rate,
+                'maxRate' => is_null($product->max_rate) ? -1 : $product->max_rate,
                 'term' => $product->term
             ];
         };

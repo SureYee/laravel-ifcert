@@ -14,8 +14,8 @@ class CreateIfcertProductsTable extends Migration
             $table->dateTime('financing_start_time')->comment('发布时间');
             $table->string('product_name')->comment('产品名称');
             $table->float('rate', 7, 6)->comment('预期年化利率(参考回报率)');
-            $table->float('min_rate', 7, 6)->comment('最小预期年化利率');
-            $table->float('max_rate', 7, 6)->comment('最大预期年化利率');
+            $table->float('min_rate', 7, 6)->nullable()->comment('最小预期年化利率');
+            $table->float('max_rate', 7, 6)->nullable()->comment('最大预期年化利率');
             $table->unsignedInteger('term')->comment('产品期限 (服务期限)(天)');
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ class CreateIfcertRepayPlanTable extends Migration
             $table->integer('total_issue');
             $table->integer('issue');
             $table->string('replan_id');
-            $table->float('cur_fund');
+            $table->float('cur_fund', 9, 0);
             $table->float('cur_interest');
             $table->float('cur_service_charge');
             $table->dateTime('repay_time');

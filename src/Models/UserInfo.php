@@ -93,7 +93,7 @@ class UserInfo extends IfcertModel
         $this->user_address = $data['userAddress'] != -1 ?: null;
         $this->reigster_date = $data['registerDate'] != -1 ?: null;
         $this->user_sex = $data['userSex'] != -1 ?: null;
-        $this->user_attr = array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
+        $this->user_bank_account = isset($data['userBankAccount']) ? $data['userBankAccount'] :array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
     }
 
     public function setUserBankAccountAttribute($value)

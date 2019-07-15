@@ -90,11 +90,11 @@ class UserInfo extends IfcertModel
         $this->user_phone = $data['userPhone'];
         $this->user_phone_hash = $data['userPhoneHash'];
         $this->user_uuid = $data['userUuid'];
-        $this->user_lawperson = $data['userLawperson'] != -1 ?: null;
-        $this->user_province = $data['userProvince'] != -1 ?: null;
-        $this->user_address = $data['userAddress'] != -1 ?: null;
-        $this->register_date = $data['registerDate'] != -1 ?: null;
-        $this->user_sex = $data['userSex'] != -1 ?: null;
+        $this->user_lawperson = $data['userLawperson'] != -1 ? $data['userLawperson'] : null;
+        $this->user_province = $data['userProvince'] != -1 ? $data['userProvince'] : null;
+        $this->user_address = $data['userAddress'] != -1 ? $data['userAddress'] : null;
+        $this->register_date = $data['registerDate'] != -1 ? $data['registerDate'] : null;
+        $this->user_sex = $data['userSex'] != -1 ? $data['userSex'] : null;
         $this->user_bank_account = isset($data['userBankAccount']) ? [$data['userBankAccount']] :array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
 
         $this->save();

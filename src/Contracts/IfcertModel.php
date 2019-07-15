@@ -45,7 +45,7 @@ abstract class IfcertModel extends Model
                 $data->request()->associate($log);
                 $data->save();
             } else {
-                $request->getModel()->storeFromData($data, $log);
+                $request->getModel()->storeFromData((array) $data, $log);
             }
         });
     }

@@ -85,7 +85,9 @@ class IfcertReport extends Command
     {
         $data = $model::needReportData();
 
-        if (count($data) === 0) return;
+        $excepts = config('ifcert.excepts', []);
+
+        if (count($data) === 0 || in_array($model::getInfType(), $excepts)) return;
 
         $request = new BatchRequest($data, $model::getInfType(), $model::getTransformer());
 

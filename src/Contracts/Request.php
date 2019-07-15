@@ -160,6 +160,11 @@ abstract class Request
         return $this->infType;
     }
 
+    public function getDataType()
+    {
+        return $this->dataType;
+    }
+
     abstract public function getUrl();
 
     abstract public function getData();

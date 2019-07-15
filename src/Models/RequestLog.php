@@ -49,6 +49,7 @@ class RequestLog extends Model
             $model->batch_num = $request->getBatchNumber();
             $model->send_time = $request->getSendTime();
             $model->inf_type = $request->getInfType();
+            $model->data_type = $request->getDataType();
             $model->url = $request->getUrl();
             $model->count = $request->getCount();
 

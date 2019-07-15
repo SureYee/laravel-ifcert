@@ -44,7 +44,7 @@ class Particular extends IfcertModel
          $this->trans_id = $data['transId'];
          $this->source_financing_code = $data['sourceFinancingCode'];
          $this->trans_type = $data['transType'];
-         $this->trans_money = $data['trans_money'];
+         $this->trans_money = $data['transMoney'];
          $this->user_idcard_hash = $data['userIdcardHash'];
          $this->trans_time = $data['transTime'];
          $this->request_id = $log->id;

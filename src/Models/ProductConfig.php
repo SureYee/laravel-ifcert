@@ -2,7 +2,6 @@
 
 namespace Sureyee\LaravelIfcert\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
@@ -27,6 +26,7 @@ class ProductConfig extends IfcertModel
                 'configId' => $config->config_id,
                 'finClaimId' => $config->fin_claim_id,
                 'sourceFinancingCode' => $config->source_financing_code,
+                'sourceProductCode' => $config->source_product_code,
                 'userIdcardHash' => $config->user_idcard_hash
             ];
         };
@@ -42,6 +42,7 @@ class ProductConfig extends IfcertModel
         $this->request_id = $log->id;
         $this->fin_claim_id = $data['finClaimId'];
         $this->source_financing_code = $data['sourceFinancingCode'];
+        $this->source_product_code = $data['sourceProductCode'];
         $this->user_idcard_hash = $data['userIdcardHash'];
 
         return $this->save();

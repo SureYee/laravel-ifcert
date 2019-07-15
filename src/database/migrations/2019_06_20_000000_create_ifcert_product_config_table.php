@@ -13,6 +13,7 @@ class CreateIfcertProductConfigTable extends Migration
             $table->string('config_id');
             $table->string('fin_claim_id');
             $table->string('source_financing_code');
+            $table->string('source_product_code');
             $table->string('user_idcard_hash');
             $table->timestamps();
         });

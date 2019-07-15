@@ -86,7 +86,7 @@ class Undertake extends IfcertModel
      */
     public function storeFromData(array $data, RequestLog $log)
     {
-        $this->un_fin_claim_id = $data['unfinClaimId'];
+        $this->un_fin_claim_id = $data['unFinClaimId'];
         $this->transfer_id = $data['transferId'];
         $this->fin_claim_id = $data['finClaimId'];
         $this->user_idcard_hash = $data['userIdcardHash'];

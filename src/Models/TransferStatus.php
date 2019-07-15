@@ -56,7 +56,7 @@ class TransferStatus extends IfcertModel
         $this->amount = $data['amount'];
         $this->float_money = $data['floatMoney'];
         $this->product_date = $data['productDate'];
-        $this->reqeust_id = $log->id;
+        $this->request_id = $log->id;
 
         $this->save();
     }

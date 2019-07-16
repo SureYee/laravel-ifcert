@@ -13,7 +13,7 @@ class CreateIfcertParticularsTable extends Migration
             $table->string('trans_id');
             $table->string('source_financing_code');
             $table->integer('trans_type');
-            $table->float('trans_money');
+            $table->float('trans_money', 9, 2);
             $table->string('user_idcard_hash');
             $table->dateTime('trans_time');
             $table->timestamps();

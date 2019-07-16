@@ -97,6 +97,8 @@ class UserInfo extends IfcertModel
         $this->user_sex = $data['userSex'] != -1 ? $data['userSex'] : null;
         $this->user_bank_account = isset($data['userBankAccount']) ? [$data['userBankAccount']] :array_map(function ($d) { return $d['userBankAccount']; }, $data['userList']);
 
+        $this->request_id = $log->id;
+
         $this->save();
     }
 

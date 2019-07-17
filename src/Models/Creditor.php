@@ -39,7 +39,7 @@ class Creditor extends IfcertModel
         $this->fin_claim_id = $data['finClaimId'];
         $this->source_product_code = $data['sourceProductCode'];
         $this->user_idcard_hash = $data['userIdcardHash'];
-        $this->inv_time = $data['invAmount'];
+        $this->inv_amount = $data['invAmount'];
         $this->inv_rate = $data['invRate'];
         $this->inv_time = $data['invTime'];
         $this->red_package = $data['redpackage'];

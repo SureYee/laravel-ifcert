@@ -2,7 +2,6 @@
 
 namespace Sureyee\LaravelIfcert\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
@@ -39,8 +38,8 @@ class Product extends IfcertModel
                 'financingStartTime' => $product->financing_start_time,
                 'productName' => $product->product_name,
                 'rate' => $product->rate,
-                'minRate' => is_null($product->min_rate) ? -1 : $product->min_rate,
-                'maxRate' => is_null($product->max_rate) ? -1 : $product->max_rate,
+                'minRate' => $product->min_rate,
+                'maxRate' => $product->max_rate,
                 'term' => $product->term
             ];
         };
@@ -62,5 +61,20 @@ class Product extends IfcertModel
         $this->request_id = $log->id;
 
         $this->save();
+    }
+
+    public function getRateAttribute($value)
+    {
+        return sprintf('%01.6f', $value);
+    }
+
+    public function getMinRateAttribute($value)
+    {
+        return is_null($value) || $value < 0 ? -1 : sprintf('%01.6f', $value);
+    }
+
+    public function getMaxRateAttribute($value)
+    {
+        return is_null($value) || $value < 0 ? -1 : sprintf('%01.6f', $value);
     }
 }

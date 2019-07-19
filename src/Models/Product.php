@@ -60,7 +60,7 @@ class Product extends IfcertModel
         $this->term = $data['term'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getRateAttribute($value)

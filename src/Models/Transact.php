@@ -70,7 +70,7 @@ class Transact extends IfcertModel
         $this->fin_claim_id = $data['finClaimId'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getTransMoneyAttribute($value)

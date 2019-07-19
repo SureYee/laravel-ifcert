@@ -6,7 +6,15 @@ use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
 
-
+/**
+ * Class ProductConfig
+ * @package Sureyee\LaravelIfcert\Models
+ * @property string $config_id
+ * @property string $fin_claim_id
+ * @property string $source_financing_code
+ * @property string $source_product_code
+ * @property string $user_idcard_hash
+ */
 class ProductConfig extends IfcertModel
 {
 

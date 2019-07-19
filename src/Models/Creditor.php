@@ -46,7 +46,7 @@ class Creditor extends IfcertModel
         $this->lock_time = $data['lockTime'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     /**

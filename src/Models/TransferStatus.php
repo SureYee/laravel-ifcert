@@ -58,7 +58,7 @@ class TransferStatus extends IfcertModel
         $this->product_date = $data['productDate'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getAmountAttribute($value)

@@ -2,12 +2,22 @@
 
 namespace Sureyee\LaravelIfcert\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
 
-
+/**
+ * Class Particular
+ * @package Sureyee\LaravelIfcert\Models
+ * @property string $trans_id
+ * @property string $source_financing_code
+ * @property int $trans_type
+ * @property float $trans_money
+ * @property string $user_idcard_hash
+ * @property Carbon $trans_time
+ */
 class Particular extends IfcertModel
 {
     protected $table = 'ifcert_particulars';

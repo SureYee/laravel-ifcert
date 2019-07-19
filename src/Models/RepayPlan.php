@@ -67,7 +67,7 @@ class RepayPlan extends IfcertModel
         $this->repay_time = $data['repayTime'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getCurFundAttribute($value)

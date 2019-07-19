@@ -49,6 +49,6 @@ class Status extends IfcertModel
         $this->source_product_code = $data['sourceProductCode'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 }

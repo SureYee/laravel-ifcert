@@ -103,7 +103,7 @@ class ScatterInvest extends IfcertModel
         $this->project_source = $data['projectSource'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getAmountAttribute($value)

@@ -4,6 +4,7 @@ namespace Sureyee\LaravelIfcert\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Sureyee\LaravelIfcert\Client;
 use Sureyee\LaravelIfcert\Contracts\IfcertModel;
 use Sureyee\LaravelIfcert\Contracts\Request;
@@ -13,6 +14,23 @@ use Sureyee\LaravelIfcert\Contracts\Request;
  * Class UserInfo
  * @package Sureyee\LaravelIfcert\Models
  * @property integer $user_type
+ * @property $user_attr
+ * @property Carbon $user_create_time
+ * @property $username
+ * @property $countries
+ * @property $card_type
+ * @property $user_idcard_hash
+ * @property $user_idcard
+ * @property $user_phone
+ * @property $user_phone_hash
+ * @property $user_uuid
+ * @property $user_lawperson
+ * @property $user_fund
+ * @property $user_province
+ * @property $user_address
+ * @property null|Carbon $register_date
+ * @property $user_sex
+ * @property $user_bank_account
  */
 class UserInfo extends IfcertModel
 {
@@ -58,7 +76,7 @@ class UserInfo extends IfcertModel
                 'userPhone' => $info->user_phone,
                 'userPhoneHash' => $info->user_phone_hash,
                 'userUuid' => $info->user_uuid,
-                'userLawperson' => $info->user_lawperson?? -1,
+                'userLawperson' => $info->user_lawperson ?? -1,
                 'userFund' => $info->user_fund ?? -1,
                 'userProvince' => $info->user_province ?? -1,
                 'userAddress' => $info->user_address ?? -1,

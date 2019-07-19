@@ -3,10 +3,19 @@
 namespace Sureyee\LaravelIfcert\Contracts;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelIfcert\Requests\BatchRequest;
 use Sureyee\LaravelIfcert\Models\RequestLog;
 
+/**
+ * Class IfcertModel
+ * @package Sureyee\LaravelIfcert\Contracts
+ * @property RequestLog $request
+ * @property int $request_id
+ * @method static Builder unReport()
+ * @method static Builder needCheck()
+ */
 abstract class IfcertModel extends Model
 {
     abstract public static function getInfType();
@@ -36,6 +45,11 @@ abstract class IfcertModel extends Model
     public function scopeUnReport($query)
     {
         return $query->whereNull('request_id');
+    }
+
+    public function scopeNeedCheck($query)
+    {
+        return $query->where('checked_message', '<>', 'success');
     }
 
     public function updateReported(BatchRequest $request, RequestLog $log)

@@ -14,18 +14,23 @@ use Sureyee\LaravelIfcert\Responses\Response;
 /**
  * Class RequestLog
  * @package Sureyee\LaravelIfcert\Models
- * @property string batch_num
- * @property Carbon send_time
- * @property integer inf_type
- * @property string url
- * @property integer count
- * @property array request_data
- * @property boolean has_checked
- * @property boolean has_reported
- * @property boolean error_code
- * @property boolean error_message
+ * @property $id
+ * @property string $batch_num
+ * @property Carbon $send_time
+ * @property integer $inf_type
+ * @property string $url
+ * @property integer $count
+ * @property boolean $has_checked
+ * @property int $data_type
+ * @property boolean $has_reported
+ * @property boolean $error_code
+ * @property boolean $error_message
  *
  * @method static Builder unChecked()
+ * @method static Builder not()
+ * @method static Builder success()
+ * @method static Builder hold()
+ * @method static Builder failed()
  */
 class RequestLog extends Model
 {
@@ -33,7 +38,6 @@ class RequestLog extends Model
 
     protected $casts= [
         'send_time' => 'datetime',
-        'request_data' => 'array'
     ];
 
     /**
@@ -108,7 +112,7 @@ class RequestLog extends Model
         return $query->where('has_reported', 1)->where('has_checked', 0);
     }
 
-    public function scopeIsNot($query)
+    public function scopeNot($query)
     {
         return $query->where('checked_message', 'isNot');
     }

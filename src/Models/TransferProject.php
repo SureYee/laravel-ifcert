@@ -70,7 +70,7 @@ class TransferProject extends IfcertModel
         $this->transfer_date = $data['transferDate'];
         $this->request_id = $log->id;
 
-        $this->save();
+        return $this->save();
     }
 
     public function getTransferAmountAttribute($value)

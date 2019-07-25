@@ -83,10 +83,13 @@ class IfcertReport extends Command
      */
     protected function reportModelData(IfcertModel $model)
     {
-        $model::unReport()->chunk(config('ifcert.batch_count', 1000), function ($data) use ($model) {
-            $excepts = config('ifcert.excepts', []);
+        $count = $model::unReport()->count();
 
-            if (count($data) === 0 || in_array($model::getInfType(), $excepts)) return;
+        $excepts = config('ifcert.excepts', []);
+
+        if ($count === 0 || in_array($model::getInfType(), $excepts)) return;
+
+        $model::unReport()->chunk(config('ifcert.batch_count', 1000), function ($data) use ($model) {
 
             $request = new BatchRequest($data, $model::getInfType(), $model::getTransformer());
 

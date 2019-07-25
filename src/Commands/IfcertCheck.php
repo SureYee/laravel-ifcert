@@ -64,7 +64,8 @@ class IfcertCheck extends Command
                 Log::critical($response->getMessage());
             } else {
                 $log->checked_message = $response->getResult()[0]->errorMsg;
-                $log->setChecked()->save();
+                $log->checked_message === 'success' ? $log->setChecked() : null;
+                $log->save();
             }
         });
     }

@@ -32,11 +32,6 @@ abstract class IfcertModel extends Model
      */
     abstract public function storeFromData(array $data, RequestLog $log);
 
-    public static function needReportData()
-    {
-        return self::unReport()->get();
-    }
-
     public function getSourceCode()
     {
         return config('ifcert.platform_code');

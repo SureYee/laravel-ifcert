@@ -7,5 +7,7 @@ return [
 
     'enter_db' => env('CERT_ENTER_DB'), // 1 正式入库，0 测试入库
 
-    'excepts' => []
+    'excepts' => [],
+
+    'batch_count' => 1000,
 ];

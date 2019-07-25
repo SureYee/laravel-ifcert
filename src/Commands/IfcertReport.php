@@ -89,7 +89,7 @@ class IfcertReport extends Command
 
         if ($count === 0 || in_array($model::getInfType(), $excepts)) return;
 
-        $model::unReport()->chunk(config('ifcert.batch_count', 1000), function ($data) use ($model) {
+        $model::unReport()->get()->chunk(config('ifcert.batch_count', 1000))->each(function ($data) use ($model) {
 
             $request = new BatchRequest($data, $model::getInfType(), $model::getTransformer());
 
